@@ -1,28 +1,19 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import ReactDOM from "react-dom/client";
 import "./index.css";
-import Root from "./Root";
-import Home from "./pages/Home";
-import Register from "./pages/Register";
-import Login from "./pages/Login";
-import AuthProvider from "./AuthProvider";
-import Dashboard from "./pages/dashboard/Dashboard";
+import { RouterProvider } from "react-router-dom";
 
-const router = createBrowserRouter([
-  {
-    path: "/", element: <Root />,
-    children: [
-      { index: true, element: <Home /> },
-      { path: '/register', element: <Register /> },
-      { path: '/login', element: <Login /> }
-    ]
-  },
-  { path: '/dashboard', element: <Dashboard /> }
-]);
+import { Toaster } from "react-hot-toast";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import router from "./routes/Router.jsx";
+import AuthProvider from "./providers/AuthProvider.jsx";
+
+const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <AuthProvider> <RouterProvider router={router} /></AuthProvider>
-  </React.StrictMode>
+  <QueryClientProvider client={queryClient}>
+    <AuthProvider>
+      <RouterProvider router={router}></RouterProvider>
+    </AuthProvider>
+    <Toaster></Toaster>
+  </QueryClientProvider>
 );
